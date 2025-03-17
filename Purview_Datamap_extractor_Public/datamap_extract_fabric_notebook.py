@@ -13,13 +13,13 @@ class PurviewConfig:
     Stores the necessary credentials and endpoints for connecting to Azure Purview,
     including tenant ID, client ID, client secret, and Purview endpoints.
     """
-    def __init__(self):
-        self.tenant_id = notebookutils.credentials.getSecret("KEYVAULT_URL", "TENANTID")
-        self.client_id = notebookutils.credentials.getSecret("KEYVAULT_URL", "CLIENTID")
-        self.client_secret = notebookutils.credentials.getSecret("KEYVAULT_URL", "CLIENTSECRET")
-        self.purview_endpoint = notebookutils.credentials.getSecret("KEYVAULT_URL", "PURVIEWENDPOINT")
-        self.purview_scan_endpoint = notebookutils.credentials.getSecret("KEYVAULT_URL", "PURVIEWSCANENDPOINT")
-        self.purview_account_name = notebookutils.credentials.getSecret("KEYVAULT_URL", "PURVIEWACCOUNTNAME")
+    def __init__(self, keyvault_url: str):
+        self.tenant_id = notebookutils.credentials.getSecret(keyvault_url, "TENANTID")
+        self.client_id = notebookutils.credentials.getSecret(keyvault_url, "CLIENTID")
+        self.client_secret = notebookutils.credentials.getSecret(keyvault_url, "CLIENTSECRET")
+        self.purview_endpoint = notebookutils.credentials.getSecret(keyvault_url, "PURVIEWENDPOINT")
+        self.purview_scan_endpoint = notebookutils.credentials.getSecret(keyvault_url, "PURVIEWSCANENDPOINT")
+        self.purview_account_name = notebookutils.credentials.getSecret(keyvault_url, "PURVIEWACCOUNTNAME")
 
 class PurviewSearchClient:
     """Client for performing searches in Azure Purview.
