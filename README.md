@@ -28,6 +28,14 @@ A script that automates the process of adding PII (Personally Identifiable Infor
 - Detailed logging and progress tracking
 - Support for large datasets
 
+### Purview_Get_Inactive_Experts_Owners
+A Python script that identifies assets in Azure Purview with inactive owners or experts by comparing contact information against the current list of active users in Azure Entra ID. Features include:
+- Automated detection of inactive contacts across all Purview collections
+- Pagination support for large datasets
+- Integration with Microsoft Graph API for user validation
+- Comprehensive reporting of assets with inactive owners/experts
+- Service principal authentication for secure API access
+
 ## Getting Started
 Each folder contains its own README.md file with specific instructions for:
 - Prerequisites
