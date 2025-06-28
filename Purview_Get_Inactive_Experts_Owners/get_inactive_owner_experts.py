@@ -14,10 +14,10 @@ dotenv.load_dotenv()
 
 class PurviewConfig:
     """
-    Configuration class for Azure Purview authentication and endpoints.
+    Configuration class for Microsoft Purview Unified Catalog authentication and endpoints.
     
     This class manages all the necessary credentials and endpoints for connecting 
-    to Azure Purview, including tenant ID, client ID, client secret, and Purview endpoints.
+    to Microsoft Purview Unified Catalog, including tenant ID, client ID, client secret, and Purview endpoints.
     All configuration values are loaded from environment variables.
     
     Attributes:
@@ -28,7 +28,7 @@ class PurviewConfig:
         purview_scan_endpoint (str): Purview scan endpoint URL
         purview_account_name (str): Purview account name
         token_url (str): OAuth2 token endpoint URL
-        resource (str): Azure Purview resource identifier
+        resource (str): Microsoft Purview Unified Catalog resource identifier
     """
     def __init__(self):
         """Initialize PurviewConfig with values from environment variables."""
@@ -44,9 +44,9 @@ class PurviewConfig:
 
 class PurviewSearchClient:
     """
-    Client for performing searches in Azure Purview.
+    Client for performing searches in Microsoft Purview Unified Catalog.
     
-    This class handles authentication and search operations against the Azure Purview catalog,
+    This class handles authentication and search operations against the Microsoft Purview Unified Catalog,
     with support for paginated results retrieval using continuation tokens. It provides
     methods to list collections and search for entities across all collections.
     
@@ -79,7 +79,7 @@ class PurviewSearchClient:
     
     def _get_data_map_client(self):
         """
-        Initialize the Purview DataMapClient for data map operations.
+        Initialize the Purview DataMapClient for Microsoft Purview Unified Catalog data map operations.
         
         Returns:
             DataMapClient: Authenticated client for Purview data map operations.
@@ -89,13 +89,13 @@ class PurviewSearchClient:
 
     def get_access_token(self):
         """
-        Fetch the access token using client credentials flow.
+        Fetch the access token using client credentials flow for Microsoft Purview Unified Catalog.
         
         This method uses the OAuth2 client credentials flow to obtain an access token
-        for Azure Purview API operations.
+        for Microsoft Purview Unified Catalog API operations.
         
         Returns:
-            str: Access token for Azure Purview API calls, or None if failed.
+            str: Access token for Microsoft Purview Unified Catalog API calls, or None if failed.
         """
         body = {
             'client_id': self.config.client_id,
@@ -115,13 +115,13 @@ class PurviewSearchClient:
 
     def list_collections(self):
         """
-        List all collections in Azure Purview with pagination support.
+        List all collections in Microsoft Purview Unified Catalog with pagination support.
         
-        This method retrieves all collections from the Purview catalog using the
+        This method retrieves all collections from the Microsoft Purview Unified Catalog using the
         collections API with automatic pagination handling.
         
         Returns:
-            list: List of collection names/IDs from the Purview catalog.
+            list: List of collection names/IDs from the Microsoft Purview Unified Catalog.
         """
         url = f"{self.config.purview_endpoint}/collections?api-version=2019-11-01-preview"
         headers = {
@@ -149,7 +149,7 @@ class PurviewSearchClient:
     
     def search_entities(self, collection_ids: list, keywords: str = "*", limit: int = 1000) -> pd.DataFrame:
         """
-        Search for entities in Purview with batching and pagination support.
+        Search for entities in Microsoft Purview Unified Catalog with batching and pagination support.
 
         This method performs searches across multiple collections with automatic pagination
         to handle large datasets. It uses cursor-based pagination for efficient data retrieval.
@@ -323,11 +323,11 @@ async def get_entraid_users(credential):
 
 async def main():
     """
-    Main function that orchestrates the entire inactive users detection process.
+    Main function that orchestrates the entire inactive users detection process for Microsoft Purview Unified Catalog.
     
     This function performs the following steps:
-    1. Initialize Purview configuration and clients
-    2. Retrieve all collections from Purview
+    1. Initialize Microsoft Purview Unified Catalog configuration and clients
+    2. Retrieve all collections from Microsoft Purview Unified Catalog
     3. Search for all entities across collections
     4. Extract and process contact information
     5. Fetch active users from Azure Entra ID

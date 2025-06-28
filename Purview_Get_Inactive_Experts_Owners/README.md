@@ -1,12 +1,12 @@
-# Azure Purview Inactive Experts & Owners Detection
+# Microsoft Purview Unified Catalog Inactive Experts & Owners Detection
 
-This Python script identifies assets in Azure Purview that have inactive owners or experts by comparing contact information against the current list of active users in Azure Entra ID (formerly Azure AD).
+This Python script identifies assets in Microsoft Purview Unified Catalog that have inactive owners or experts by comparing contact information against the current list of active users in Azure Entra ID (formerly Azure AD).
 
 ## Overview
 
 The script performs the following operations:
 
-1. **Connects to Azure Purview** using service principal authentication
+1. **Connects to Microsoft Purview Unified Catalog** using service principal authentication
 2. **Retrieves all collections** from the Purview catalog
 3. **Searches all entities** across all collections with pagination support
 4. **Extracts contact information** (owners and experts) from each asset
@@ -17,10 +17,10 @@ The script performs the following operations:
 ## Prerequisites
 
 - Python 3.8 or higher
-- Azure Purview account with appropriate permissions
+- Microsoft Purview Unified Catalog account with appropriate permissions
 - Azure Entra ID (Azure AD) tenant
 - Service principal with permissions to:
-  - Read Purview catalog data
+  - Read Microsoft Purview Unified Catalog data
   - Read Azure Entra ID user information
 
 ## Installation
@@ -58,7 +58,7 @@ The script performs the following operations:
 
 The service principal needs the following permissions:
 
-**Azure Purview:**
+**Microsoft Purview Unified Catalog:**
 - `PurviewDataReader` role or equivalent permissions to read catalog data
 
 **Microsoft Graph:**
