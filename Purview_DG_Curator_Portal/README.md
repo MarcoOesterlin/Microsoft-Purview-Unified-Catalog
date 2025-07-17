@@ -12,57 +12,71 @@ A Streamlit-based web application for managing and curating data assets in Micro
 - Modern and responsive UI
 
 ## Prerequisites
+- Python 3.8+
+- Access to Microsoft Purview Unified Catalog
+- Service Principal with Microsoft Purview & Graph API permissions (see below)
 
-- Python 3.7 or higher
-- Microsoft Purview account with appropriate permissions
-- Azure AD application with access to Purview (for authentication)
+## Setup & Usage
 
-## Required Environment Variables
+1. **Install Python 3.8+**
+   - Make sure Python is installed and available in your PATH.
 
-Create a `.env` file in the project root with the following variables:
+2. **Set up your environment variables:**
+   - Create a `.env` file in this directory with your Azure credentials and Purview/Graph API details (see below for required variables).
 
-```env
-TENANTID=your_tenant_id
-CLIENTID=your_client_id
-CLIENTSECRET=your_client_secret
-PURVIEWENDPOINT=your_purview_endpoint
-PURVIEWSCANENDPOINT=your_purview_scan_endpoint
-PURVIEWACCOUNTNAME=your_purview_account_name
-```
+3. **Install dependencies:**
+   ```
+   pip install -r requirements.txt
+   ```
 
-## Installation
+4. **Run the Streamlit app:**
+   ```
+   streamlit run app.py
+   ```
 
-1. Clone the repository:
-```bash
-git clone https://github.com/your-username/Microsoft-Purview-Unified-Catalog.git
-cd Microsoft-Purview-Unified-Catalog/Purview_DG_Curator_Portal
-```
+**Note:**
+- You do NOT need to create or activate a virtual environment; simply install the requirements and run the app as above.
+- Ensure your `.env` file is properly configured for both Purview and Microsoft Graph API access.
 
-2. Create and activate a virtual environment (recommended):
-```bash
-python -m venv venv
-# On Windows
-venv\Scripts\activate
-# On Unix or MacOS
-source venv/bin/activate
-```
+## Microsoft Graph API Requirements
+To fetch Entra ID (Azure AD) user data, you must have a service principal with access to the Microsoft Graph API and the `User.Read.All` permission. You can use your existing Purview service principal for this purpose, as long as it has the required Graph API permissions.
 
-3. Install the required packages:
-```bash
-pip install -r requirements.txt
-pip install streamlit pandas azure-identity azure-purview-datamap python-dotenv
-```
+**How to set up:**
+1. Register an Azure AD application (service principal) in the Azure portal (or use your existing Purview service principal).
+2. Grant the application the `User.Read.All` permission for Microsoft Graph API (Application permissions).
+3. Grant admin consent for the permission.
+4. Use the client ID, tenant ID, and client secret of this service principal in your environment variables or `.env` file as required by the app.
 
-## Running the Portal
+## Purview API Requirements
+To access and manage assets in Microsoft Purview via this portal, you must use a service principal (Azure AD application) with the appropriate permissions assigned in your Purview account's Data Map.
 
-1. Ensure your `.env` file is properly configured with the required environment variables.
+**How to set up:**
+1. Register an Azure AD application (service principal) in the Azure portal (or use your existing one).
+2. Assign the service principal to your Purview account with one of the following roles:
+   - **Data Curator** (recommended for full curation capabilities)
+   - **Data Source Admin** (if you need to manage sources)
+3. Grant the service principal access in the Purview Data Map 'Collections' permissions.
+4. Use the client ID, tenant ID, and client secret of this service principal in your environment variables or `.env` file as required by the app.
 
-2. Start the Streamlit application:
-```bash
-streamlit run app.py
-```
+> **Note:** The same service principal can be used for both Purview API and Microsoft Graph API access, as long as it has the required permissions for both.
 
-3. The portal will open in your default web browser at `http://localhost:8501`
+## Setup & Usage
+1. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+2. Navigate to the folder containing app.py:
+   ```
+   cd Purview_DG_Curator_Portal
+   ```
+3. Start the Streamlit app:
+   ```
+   streamlit run app.py
+   ```
+
+**Note:**
+- There is no need to create or activate a virtual environment; simply install the requirements and run the app as above.
+- Ensure your environment variables or `.env` file are configured for Purview and Graph API access.
 
 ## Usage
 

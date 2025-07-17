@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-import purview_dg_curator_portal
+import get_data
 import add_tag
 import delete_tag
 import get_entra_id_users
@@ -8,14 +8,14 @@ import add_owner
 import time
 import asyncio
 
-def get_data():
-    df = purview_dg_curator_portal.main()  # Using the imported main function directly
+def load_data():
+    df = get_data.main()  # Using the imported main function directly
     
     # Handle None or empty DataFrame
     if df is None or df.empty:
         print("Warning: No data returned from purview_dg_curator_portal.main()")
         # Create empty DataFrame with expected columns
-        df = pd.DataFrame(columns=['id', 'name', 'contact', 'tag', 'classification', 'description'])
+        df = pd.DataFrame(columns=['id', 'name', 'assetType', 'entityType', 'contact', 'tag', 'classification', 'description'])
         return df
     
     # Print available columns and first few rows for debugging
@@ -28,6 +28,8 @@ def get_data():
     column_mapping = {
         'id': 'id',
         'name': 'name',
+        'assetType': 'assetType',
+        'entityType': 'entityType',
         'contact': 'contact',
         'tag': 'tag',  # Try the most likely column name for tags
         'classification': 'classification',  # Try the most likely column name for classification
@@ -35,14 +37,14 @@ def get_data():
     }
     
     # Ensure all expected columns exist
-    for col in ['id', 'name', 'contact', 'tag', 'classification', 'description']:
+    for col in ['id', 'name', 'assetType', 'entityType', 'contact', 'tag', 'classification', 'description']:
         if column_mapping[col] not in df.columns:
             print(f"Warning: Column {column_mapping[col]} not found in DataFrame")
             # Add empty column with expected name
             df[column_mapping[col]] = None
     
     # Select all columns (including empty ones)
-    selected_columns = [column_mapping[col] for col in ['id', 'name', 'contact', 'tag', 'classification', 'description']]
+    selected_columns = [column_mapping[col] for col in ['id', 'name', 'assetType', 'entityType', 'contact', 'tag', 'classification', 'description']]
     df = df[selected_columns]
     
     # Rename columns back to expected names
@@ -98,7 +100,7 @@ if 'editor_key' not in st.session_state:
 
 # Initialize DataFrame in session state
 if 'df' not in st.session_state:
-    st.session_state.df = get_data()
+    st.session_state.df = load_data()
 
 # Custom CSS for table width and height
 st.markdown("""
@@ -317,7 +319,7 @@ with tab2:
                 # Here you would typically call your API or function to add the tag
                 # Clear the input field after successful addition
                 # Refresh the DataFrame in session state
-                st.session_state.df = get_data()
+                st.session_state.df = load_data()
                 refresh_page()
             else:
                 st.error("Please enter a tag name")
@@ -453,7 +455,7 @@ with tab3:
                     delete_tag.main(guids=st.session_state.selected_ids, tags=all_asset_tags)
                     st.success(f"Deleted tags from {len(st.session_state.selected_ids)} assets!")
                     # Refresh the DataFrame in session state
-                    st.session_state.df = get_data()
+                    st.session_state.df = load_data()
                     refresh_page()
         else:
             st.error("No tags exist in the selected assets")
@@ -673,7 +675,7 @@ with tab4:
                     
                     st.session_state.success_message = f"Assigned {len(selected_users)} users as {st.session_state.owner_role}s to {len(st.session_state.selected_ids)} assets!"
                     # Refresh the DataFrame in session state
-                    st.session_state.df = get_data()
+                    st.session_state.df = load_data()
                     # Clear the selection
                     st.session_state.selected_ids = []
                     st.session_state.selected_owners = []

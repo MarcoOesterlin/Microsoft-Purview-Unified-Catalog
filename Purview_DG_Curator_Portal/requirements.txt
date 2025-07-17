@@ -1,0 +1,10 @@
+streamlit
+pandas
+requests
+azure-identity
+azure-purview-catalog
+azure-purview-datamap
+azure-core
+python-dotenv
+
+
