@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import get_data
 import add_tag
+import add_classificiation
 import delete_tag
 import get_entra_id_users
 import add_owner
@@ -98,6 +99,10 @@ if 'owner_role' not in st.session_state:
 if 'editor_key' not in st.session_state:
     st.session_state.editor_key = 0
 
+# Initialize classification multiselect key for Add Classifications tab
+if 'classification_multiselect_key' not in st.session_state:
+    st.session_state.classification_multiselect_key = 0
+
 # Initialize DataFrame in session state
 if 'df' not in st.session_state:
     st.session_state.df = load_data()
@@ -125,9 +130,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.title("Purview Unified Catalog Curator Portal")
-[tab1, tab2, tab3, tab4] = st.tabs(["Data Assets", "Add Tags", "Delete Tags", "Add Data Owner / Expert"])
+[tabs_data_assets, tab2, tab3, tab4, tab5] = st.tabs(["Data Assets", "Add Tags", "Delete Tags", "Add Data Owner / Expert", "Add Classifications"])
 
-with tab1:
+with tabs_data_assets:
     # Use the DataFrame from session state
     df = st.session_state.df
     
@@ -689,6 +694,107 @@ with tab4:
     else:
         st.error("No users found or error retrieving users")
         
+with tab5:
+    st.subheader("Add Classifications to Selected Assets")
+    df = st.session_state.df
+    selected_ids = st.session_state.selected_ids
+    if not selected_ids:
+        st.info("Please select assets from the Data Assets tab to add classifications.")
+        st.markdown("""
+            <div style="background-color: #e8f4f8; padding: 20px; border-radius: 10px; border-left: 5px solid #2196F3;">
+                <p>To add classifications:</p>
+                <ol>
+                    <li>Go to the Data Assets tab</li>
+                    <li>Select the assets you want to classify using the checkboxes</li>
+                    <li>Return to this tab to add classifications</li>
+                </ol>
+            </div>
+        """, unsafe_allow_html=True)
+        st.stop()
+    else:
+        st.write(f"Selected assets for classification: {len(selected_ids)}")
+        st.markdown("""
+            <style>
+                .selected-items {
+                    background-color: #f0f2f6;
+                    padding: 15px;
+                    border-radius: 10px;
+                    margin: 10px 0;
+                    display: flex;
+                    flex-direction: row;
+                    gap: 8px;
+                    align-items: center;
+                    overflow-x: auto;
+                    white-space: nowrap;
+                    -webkit-overflow-scrolling: touch;
+                }
+                .selected-id {
+                    display: inline-block;
+                    background-color: #ffffff;
+                    padding: 8px 12px;
+                    margin: 0;
+                    font-size: 13px;
+                    color: #333;
+                    border: 1px solid #e0e0e0;
+                    font-family: monospace;
+                    flex-shrink: 0;
+                }
+            </style>
+        """, unsafe_allow_html=True)
+        st.markdown('<div class="selected-items">', unsafe_allow_html=True)
+        for id in selected_ids:
+            st.markdown(f'<div class="selected-id">{id}</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        # Classification dictionary
+        classification_dict = {
+            "All Full Names": "MICROSOFT.PERSONAL.NAME",
+            "All Physical Addresses": "MICROSOFT.PERSONAL.PHYSICALADDRESS",
+            "Common Passwords": "MICROSOFT.SECURITY.COMMON_PASSWORDS",
+            "Country / Region": "MICROSOFT.GOVERNMENT.COUNTRY_NAME",
+            "Credit Card Number": "MICROSOFT.FINANCIAL.CREDIT_CARD_NUMBER",
+            "Date of Birth": "MICROSOFT.PERSONAL.DATE_OF_BIRTH",
+            "Email Address": "MICROSOFT.PERSONAL.EMAIL",
+            "Ethnic Group": "MICROSOFT.PERSONAL.ETHNIC_GROUP",
+            "Geolocation (Lat/Lon)": "MICROSOFT.PERSONAL.GEOLOCATION",
+            "International Banking Account Number   (IBAN)": "MICROSOFT.FINANCIAL.INTERNATIONAL.BANK_ACCOUNT_NUMBER",
+            "IP Address": "MICROSOFT.MISCELLANEOUS.IPADDRESS",
+            "Person’s Age": "MICROSOFT.PERSONAL.AGE",
+            "Person’s Gender": "MICROSOFT.PERSONAL.GENDER",
+            "Personal IP Address": "MICROSOFT.PERSONAL.IPADDRESS",
+            "SWIFT Code": "MICROSOFT.FINANCIAL.SWIFT_CODE",
+            "World Cities": "MICROSOFT.GOVERNMENT.CITY_NAME"
+        }
+
+        st.markdown("---")
+        st.subheader("Select Classifications to Add")
+        # Show both friendly name and type name in the multiselect
+        options = [f"{friendly} ({type_name})" for friendly, type_name in classification_dict.items()]
+        selected_options = st.multiselect(
+            "Choose one or more classifications:",
+            options,
+            key=f"classification_multiselect_{st.session_state.classification_multiselect_key}"
+        )
+        # Extract type names from selected options
+        selected_classifications = [classification_dict[opt.split(' (')[0]] for opt in selected_options]
+        if selected_classifications:
+            st.write("Selected classification type names:")
+            for tname in selected_classifications:
+                st.write(f"- {tname}")
+        if st.button("Add Classifications to Selected Assets"):
+            if not selected_classifications:
+                st.error("Please select at least one classification.")
+            else:
+                st.success(f"Classifications {selected_classifications} will be added to {len(selected_ids)} assets!")
+                print("Selected GUIDs:", selected_ids)
+                print("Selected Classifications:", selected_classifications)
+                add_classificiation.main(guid_list=selected_ids, classification_type_names=selected_classifications)
+                st.session_state.df = load_data()
+                st.session_state.selected_ids = []
+                st.session_state.classification_multiselect_key += 1  # Force rerun and clear multiselect
+                st.rerun()
+
+
 # Add tab change detection
 if 'current_tab' not in st.session_state:
     st.session_state.current_tab = "Data Assets"
@@ -698,7 +804,7 @@ if st.session_state.current_tab != "Add Data Owner" and tab4.active:
     st.session_state.tab4_reset = True
 
 # Update current tab
-if tab1.active:
+if tabs_data_assets.active:
     st.session_state.current_tab = "Data Assets"
 elif tab2.active:
     st.session_state.current_tab = "Add Tags"
@@ -706,5 +812,8 @@ elif tab3.active:
     st.session_state.current_tab = "Delete Tags"
 elif tab4.active:
     st.session_state.current_tab = "Add Data Owner"
+elif tab5.active:
+    st.session_state.current_tab = "Add Classifications"
         
+
         
