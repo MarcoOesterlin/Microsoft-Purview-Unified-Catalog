@@ -68,7 +68,7 @@ The service principal needs the following permissions:
 
 Run the script from the command line:
 
-```bash
+```
 python get_inactive_owner_experts.py
 ```
 

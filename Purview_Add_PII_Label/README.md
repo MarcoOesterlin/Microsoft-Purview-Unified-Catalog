@@ -35,12 +35,8 @@ PURVIEW_ENDPOINT=your_purview_endpoint
 ## Usage
 
 1. Set up your environment variables in the `.env` file
-2. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
+2. Run the script:
    ```
-3. Run the script:
-   ```bash
    python Add_PII_Label.py
    ```
 

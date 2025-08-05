@@ -67,7 +67,7 @@ PURVIEWACCOUNTNAME=<your-purview-account-name>
 2. **Set Your Collection**: Edit the script to set your specific collection ID as described above.
 3. **Run the Script**:
 
-   ```bash
+   ```
    python delete_Assets.py
    ```
 

@@ -143,8 +143,3 @@ This will:
 - Implements date-based folder structure for data organization
 - Exports data as JSON files with UUID-based filenames
 
-## 🔄 Version History
-
-- 1.0.0
-  - Initial Release
-  - Support for both Azure SQL and Fabric Notebook export methods

@@ -35,7 +35,7 @@ asset_id = "your-asset-guid-here"
 ```
 
 2. Run the script:
-```bash
+```
 python Get_Data_Asset_Schema.py
 ```
 

@@ -112,7 +112,3 @@ To access and manage assets in Microsoft Purview via this portal, you must use a
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Support
-
-For support, please open an issue in the GitHub repository or contact the maintainers. 
