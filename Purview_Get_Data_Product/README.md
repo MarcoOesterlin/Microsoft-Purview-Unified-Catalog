@@ -47,10 +47,6 @@ CLIENTID=your-client-id-here
 # Azure AD Application Client Secret
 CLIENTSECRET=your-client-secret-here
 
-# Purview Endpoint (optional - defaults to new portal)
-# For NEW Microsoft Purview portal (Unified Catalog):
-PURVIEW_ENDPOINT=https://api.purview-service.microsoft.com
-
 # For CLASSIC Purview governance portal:
 # PURVIEW_ENDPOINT=https://your-account-name.purview.azure.com
 ```
