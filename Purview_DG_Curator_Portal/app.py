@@ -513,7 +513,11 @@ with tab4:
     
     # Get users from get_entra_id_users using asyncio
     async def get_users():
-        return await get_entra_id_users.main()
+        try:
+            return await get_entra_id_users.main()
+        except Exception as e:
+            st.error(f"Error fetching Entra ID users: {str(e)}")
+            return pd.DataFrame(columns=['id', 'displayName'])
     
     # Run the async function
     users_df = asyncio.run(get_users())
@@ -692,7 +696,13 @@ with tab4:
         else:
             st.error(f"Could not find name column. Available columns are: {users_df.columns.tolist()}")
     else:
-        st.error("No users found or error retrieving users")
+        st.warning("⚠️ Unable to retrieve Entra ID users. Please check:")
+        st.markdown("""
+            - Your Azure credentials (TENANTID, CLIENTID, CLIENTSECRET) in the .env file
+            - The service principal has the required Microsoft Graph API permissions (User.Read.All)
+            - The service principal has been granted admin consent
+        """)
+        st.info("Check the terminal/console for detailed error messages.")
         
 with tab5:
     st.subheader("Add Classifications to Selected Assets")
