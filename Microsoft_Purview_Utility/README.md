@@ -401,7 +401,7 @@ print(f"Token acquired: {token.token[:20]}...")
 
 ### Microsoft Documentation
 - [Microsoft Purview REST API](https://learn.microsoft.com/en-us/rest/api/purview/)
-- [Microsoft Foundry Foundry Agents](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/agent)
+- [Microsoft Foundry Agents](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/agent)
 - [Microsoft Fabric REST API](https://learn.microsoft.com/en-us/rest/api/fabric/)
 - [Microsoft Graph API](https://learn.microsoft.com/en-us/graph/overview)
 
@@ -437,16 +437,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🤝 Contributing
 
-This is an enterprise data governance tool designed for Microsoft Purview environments. For questions, feature requests, or issues:
+This is an data governance tool designed for Microsoft Purview Unified Catalog environments. For questions, feature requests, or issues:
 
 1. Check existing documentation above
 2. Review troubleshooting section
-3. Contact your organization's data governance team
-4. For bugs: Create an issue with reproduction steps
+3. For bugs: Create an issue with reproduction steps
 
 ---
 
 **Built with:** React · TypeScript · Python · Flask · Microsoft Foundry · Microsoft Purview · Microsoft Fabric
 
-**Version:** 1.0.0  
+**Version:** 0.1.0  
 **Last Updated:** February 2026
