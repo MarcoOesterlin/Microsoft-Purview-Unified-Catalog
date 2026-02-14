@@ -22,3 +22,5 @@ ENV/
 # OS
 .DS_Store
 Thumbs.db
+*.ico
+Microsoft_Purview_Utility/public/favicon.ico
