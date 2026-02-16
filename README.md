@@ -23,7 +23,7 @@ A comprehensive collection of tools, scripts, and applications for managing and 
   - Business glossary synchronization
   - Orphaned assets detection and cleanup
   - Real-time search with filtering and sorting
-  - Modern, responsive UI with dark mode support
+  - Modern, responsive UI
 - **Use Case**: Primary interface for data governance teams, centralized asset management, and comprehensive data catalog operations
 
 ### 🔍 [Microsoft_Purview_Get_Asset_Schema](./Microsoft_Purview_Get_Asset_Schema/)
