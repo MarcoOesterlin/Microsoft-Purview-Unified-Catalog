@@ -15,15 +15,15 @@ A comprehensive collection of tools, scripts, and applications for managing and 
   - Browse and search assets by type, collection, and classification
   - Data products catalog with governance domain tracking
   - Advanced curation portal with bulk operations:
-    - Add/delete tags with auto-suggestions
-    - Add/delete classifications with ML-powered recommendations
+    - Add/delete tags
+    - Add/delete classifications with Auto Suggestions
     - Manage owners and experts with Entra ID integration
     - Add descriptions and metadata
     - Create and manage lineage relationships
   - Business glossary synchronization
-  - Orphaned assets detection and cleanup
+  - Orphaned assets detection
   - Real-time search with filtering and sorting
-  - Modern, responsive UI with dark mode support
+  - Modern responsive UI
 - **Use Case**: Primary interface for data governance teams, centralized asset management, and comprehensive data catalog operations
 
 ### 🔍 [Microsoft_Purview_Get_Asset_Schema](./Microsoft_Purview_Get_Asset_Schema/)
