@@ -7,5 +7,7 @@ azure-core
 python-dotenv
 flask
 flask-cors
+aiohttp
+openai
 
 

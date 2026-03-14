@@ -1,0 +1,25 @@
+{
+  "name": "microsoft_purview_data_quality_sql_expression_validator",
+  "version": "1.0.0",
+  "description": "Firefox extension that validates Microsoft Purview SQL expressions and dataset names.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "firefox",
+    "extension",
+    "purview",
+    "sql",
+    "data-quality"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^5.5.2"
+  }
+}

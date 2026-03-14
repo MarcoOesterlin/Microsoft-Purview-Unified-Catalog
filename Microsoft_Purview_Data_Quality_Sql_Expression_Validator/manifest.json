@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Purview SQL Expression Validator",
+  "version": "1.0.0",
+  "description": "Validates Microsoft Purview custom SQL expressions directly in your browser sidebar.",
+  "sidebar_action": {
+    "default_title": "Purview SQL Validator",
+    "default_panel": "popup.html",
+    "default_icon": {
+      "48": "icons/icon.svg"
+    }
+  },
+  "permissions": [],
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
+  }
+}

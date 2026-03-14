@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Microsoft Purview Data Quality Validator</title>
+    <link rel="stylesheet" href="styles/popup.css" />
+  </head>
+  <body>
+    <div class="sidebar">
+
+      <header>
+        <div class="header-text">
+          <span class="header-eyebrow">Microsoft Purview Unified Catalog</span>
+          <h1>Data Quality SQL Expression Validator</h1>
+          <span class="header-hint">Results update as you type</span>
+        </div>
+      </header>
+
+      <div class="content">
+
+        <div id="verdict-badge" class="verdict-badge hidden" role="status" aria-live="polite"></div>
+        <div id="messages" class="messages" aria-live="polite"></div>
+
+        <div class="field-section">
+          <div class="field-header">
+            <label for="row-expr">Row expression</label>
+            <span class="badge badge-required">required</span>
+          </div>
+          <textarea
+            id="row-expr"
+            rows="4"
+            placeholder="e.g. fareAmount > 0 AND tripDistance > 0"
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <div class="field-section">
+          <div class="field-header">
+            <label for="filter-expr">Filter expression</label>
+            <span class="badge badge-optional">optional</span>
+          </div>
+          <textarea
+            id="filter-expr"
+            rows="3"
+            placeholder="e.g. paymentType IN ('CRD', 'CSH')"
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <div class="field-section">
+          <div class="field-header">
+            <label for="null-expr">Null expression</label>
+            <span class="badge badge-optional">optional</span>
+          </div>
+          <textarea
+            id="null-expr"
+            rows="2"
+            placeholder="e.g. fareAmount IS NULL"
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+      </div>
+
+      <footer>
+        <span class="footer-brand">Purview DQ</span>
+        <a
+          href="https://learn.microsoft.com/en-us/purview/unified-catalog-data-quality-rules#create-a-custom-rule-using-sql-expression"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.25 3.25a.75.75 0 0 0 1.06 0l3.25-3.25a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/><path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/></svg>
+          SQL rule docs
+        </a>
+      </footer>
+
+    </div>
+    <script src="dist/popup.js" type="module"></script>
+  </body>
+</html>
