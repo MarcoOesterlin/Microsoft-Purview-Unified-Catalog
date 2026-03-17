@@ -16,7 +16,8 @@ As you type, the extension checks your expressions and reports:
 | **Disallowed DML/DCL** | Blocks `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `DROP`, `ALTER`, `GRANT`, `REVOKE`, `MERGE`. |
 | **Unsupported functions** | Flags Purview-specific helpers that are not valid in SQL expressions: `isDelete`, `isError`, `isIgnore`, `isInsert`, `isUpdate`, `isUpsert`, `partitionId`. |
 | **JOINs** | SQL rules run against a single table — `JOIN` is not supported. |
-| **Window functions** | `ROW_NUMBER()`, `RANK()`, `LAG()`, `LEAD()`, etc. trigger a warning as they may not behave as expected. |
+| **Window functions** | `ROW_NUMBER()`, `RANK()`, `LAG()`, `LEAD()`, etc. are flagged as **errors** — Purview DQ expressions are row-level predicates; set-based window operations are not supported. |
+| **Missing ORDER BY** | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()` without `ORDER BY` inside `OVER()` produce non-deterministic results and are flagged as errors. |
 
 The validator covers all three expression types that Purview supports:
 

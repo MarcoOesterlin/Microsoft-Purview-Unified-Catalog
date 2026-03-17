@@ -15,56 +15,274 @@
           <h1>Data Quality SQL Expression Validator</h1>
           <span class="header-hint">Results update as you type</span>
         </div>
+        <button id="cog-btn" class="cog-btn" aria-label="Open configuration">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
       </header>
 
-      <div class="content">
-
-        <div id="verdict-badge" class="verdict-badge hidden" role="status" aria-live="polite"></div>
-        <div id="messages" class="messages" aria-live="polite"></div>
-
-        <div class="field-section">
-          <div class="field-header">
-            <label for="row-expr">Row expression</label>
-            <span class="badge badge-required">required</span>
-          </div>
-          <textarea
-            id="row-expr"
-            rows="4"
-            placeholder="e.g. fareAmount > 0 AND tripDistance > 0"
-            spellcheck="false"
-          ></textarea>
+      <!-- Config overlay -->
+      <div id="config-overlay" class="config-overlay hidden">
+        <div class="config-overlay-header">
+          <span>Configuration</span>
+          <button id="config-close" class="config-close" aria-label="Close configuration">&times;</button>
         </div>
+        <div class="config-panel">
+          <form id="config-form" autocomplete="off">
 
-        <div class="field-section">
-          <div class="field-header">
-            <label for="filter-expr">Filter expression</label>
-            <span class="badge badge-optional">optional</span>
-          </div>
-          <textarea
-            id="filter-expr"
-            rows="3"
-            placeholder="e.g. paymentType IN ('CRD', 'CSH')"
-            spellcheck="false"
-          ></textarea>
+            <div class="config-group">
+              <label for="cfg-clientid">Client ID</label>
+              <div class="input-wrap">
+                <input type="password" id="cfg-clientid" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off" />
+                <button type="button" class="eye-btn" data-target="cfg-clientid" aria-label="Toggle Client ID visibility">
+                  <svg class="icon-eye" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="icon-eye-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="config-group">
+              <label for="cfg-clientsecret">Client Secret</label>
+              <div class="input-wrap">
+                <input type="password" id="cfg-clientsecret" placeholder="Your Azure app client secret" autocomplete="new-password" />
+                <button type="button" class="eye-btn" data-target="cfg-clientsecret" aria-label="Toggle Client Secret visibility">
+                  <svg class="icon-eye" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="icon-eye-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="config-group">
+              <label for="cfg-tenantid">Tenant ID</label>
+              <div class="input-wrap">
+                <input type="password" id="cfg-tenantid" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off" />
+                <button type="button" class="eye-btn" data-target="cfg-tenantid" aria-label="Toggle Tenant ID visibility">
+                  <svg class="icon-eye" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="icon-eye-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="config-group">
+              <label for="cfg-accountname">Purview Account Name</label>
+              <div class="input-wrap">
+                <input type="password" id="cfg-accountname" placeholder="e.g. osterlin" autocomplete="off" />
+                <button type="button" class="eye-btn" data-target="cfg-accountname" aria-label="Toggle Account Name visibility">
+                  <svg class="icon-eye" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="icon-eye-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+              <span class="config-hint">Endpoints below are auto-filled from the account name</span>
+            </div>
+
+            <div class="config-group">
+              <label for="cfg-endpoint">Purview Endpoint</label>
+              <div class="input-wrap">
+                <input type="password" id="cfg-endpoint" placeholder="https://ACCOUNT.purview.azure.com" autocomplete="off" />
+                <button type="button" class="eye-btn" data-target="cfg-endpoint" aria-label="Toggle Endpoint visibility">
+                  <svg class="icon-eye" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="icon-eye-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="config-group">
+              <label for="cfg-scanendpoint">Purview Scan Endpoint</label>
+              <div class="input-wrap">
+                <input type="password" id="cfg-scanendpoint" placeholder="https://ACCOUNT.scan.purview.azure.com" autocomplete="off" />
+                <button type="button" class="eye-btn" data-target="cfg-scanendpoint" aria-label="Toggle Scan Endpoint visibility">
+                  <svg class="icon-eye" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="icon-eye-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="config-section-divider">AI Rule Generator (optional)</div>
+
+            <div class="config-group">
+              <label for="cfg-foundry-responses-url">Agent Responses URL</label>
+              <div class="input-wrap">
+                <input type="password" id="cfg-foundry-responses-url" placeholder="https://&#x2026;.services.ai.azure.com/api/projects/&#x2026;/applications/&#x2026;/protocols/openai/responses" autocomplete="off" />
+                <button type="button" class="eye-btn" data-target="cfg-foundry-responses-url" aria-label="Toggle Responses URL visibility">
+                  <svg class="icon-eye" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="icon-eye-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+              <span class="config-hint">{AZURE_EXISTING_AIPROJECT_ENDPOINT}/applications/{AZURE_EXISTING_AGENT_ID}/protocols/openai/responses</span>
+            </div>
+
+            <div class="config-group">
+              <label for="cfg-foundry-apikey">AI Foundry API Key</label>
+              <div class="input-wrap">
+                <input type="password" id="cfg-foundry-apikey" placeholder="AZURE_FOUNDRY_API_KEY" autocomplete="new-password" />
+                <button type="button" class="eye-btn" data-target="cfg-foundry-apikey" aria-label="Toggle API Key visibility">
+                  <svg class="icon-eye" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="icon-eye-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+              <span class="config-hint">AZURE_FOUNDRY_API_KEY from your .env (if set, used instead of Bearer token)</span>
+            </div>
+
+            <button type="submit" class="save-btn">Save Configuration</button>
+
+          </form>
+
+          <p id="config-status" class="config-status"></p>
+
         </div>
+      </div>
 
-        <div class="field-section">
-          <div class="field-header">
-            <label for="null-expr">Null expression</label>
-            <span class="badge badge-optional">optional</span>
+      <!-- Tab bar -->
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="validator">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Validator
+        </button>
+        <button class="tab-btn" data-tab="generator">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Rule Generator
+        </button>
+      </div>
+
+      <!-- ═══ TAB: VALIDATOR ═══ -->
+      <div id="tab-validator" class="tab-panel">
+        <div class="content">
+
+          <!-- Browse panel (validator context) -->
+          <div id="browse-panel" class="browse-panel">
+            <div class="browse-panel-hdr">
+              <span class="browse-panel-title">Governance Domains</span>
+              <button id="browse-refresh-btn" class="browse-refresh-btn" title="Load data products" aria-label="Load data products">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </button>
+            </div>
+            <p id="browse-status" class="browse-status-msg"></p>
+            <div id="browse-tree" class="browse-tree"></div>
           </div>
-          <textarea
-            id="null-expr"
-            rows="2"
-            placeholder="e.g. fareAmount IS NULL"
-            spellcheck="false"
-          ></textarea>
-        </div>
 
+          <div id="verdict-badge" class="verdict-badge hidden" role="status" aria-live="polite"></div>
+          <div id="messages" class="messages" aria-live="polite"></div>
+
+          <div class="field-section">
+            <div class="field-header">
+              <label for="row-expr">Row expression</label>
+              <span class="badge badge-required">required</span>
+            </div>
+            <textarea id="row-expr" rows="4" placeholder="e.g. fareAmount > 0 AND tripDistance > 0" spellcheck="false"></textarea>
+          </div>
+
+          <div class="field-section">
+            <div class="field-header">
+              <label for="filter-expr">Filter expression</label>
+              <span class="badge badge-optional">optional</span>
+            </div>
+            <textarea id="filter-expr" rows="3" placeholder="e.g. paymentType IN ('CRD', 'CSH')" spellcheck="false"></textarea>
+          </div>
+
+          <div class="field-section">
+            <div class="field-header">
+              <label for="null-expr">Null expression</label>
+              <span class="badge badge-optional">optional</span>
+            </div>
+            <textarea id="null-expr" rows="2" placeholder="e.g. fareAmount IS NULL" spellcheck="false"></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ TAB: RULE GENERATOR ═══ -->
+      <div id="tab-generator" class="tab-panel hidden">
+        <div class="content rg-content">
+
+          <!-- Asset browser -->
+          <div class="browse-panel">
+            <div class="browse-panel-hdr">
+              <span class="browse-panel-title">Governance Domains</span>
+              <button id="rg-refresh-btn" class="browse-refresh-btn" title="Reload governance domains" aria-label="Reload governance domains">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </button>
+            </div>
+            <p id="rg-browse-status" class="browse-status-msg"></p>
+            <div id="rg-browse-tree" class="browse-tree rg-browse-tree"></div>
+          </div>
+
+          <!-- Column multi-select -->
+          <div class="rg-section" id="rg-col-section">
+            <div class="browse-panel-hdr">
+              <span class="browse-panel-title">Columns</span>
+              <span id="rg-col-count" class="rg-sel-count"></span>
+              <button id="rg-select-all-cols" class="rg-select-all-btn" disabled>Select All</button>
+            </div>
+            <div id="rg-col-list" class="rg-col-list">
+              <span class="browse-empty-cols">Expand an asset above to load its columns</span>
+            </div>
+          </div>
+
+          <!-- Dimension multi-select -->
+          <div class="rg-section">
+            <div class="browse-panel-hdr">
+              <span class="browse-panel-title">Dimensions</span>
+              <span id="rg-dim-count" class="rg-sel-count"></span>
+              <button id="rg-select-all-dims" class="rg-select-all-btn">Select All</button>
+            </div>
+            <div class="rg-dim-chips">
+              <button class="col-chip rg-dim-chip" data-dim="Accuracy" data-tooltip="Accuracy measures whether data values are correct and free from errors. This includes checking that values match expected formats, fall within valid ranges, or conform to known reference data. Example: a date column should not contain future dates, a price column should not be negative.">Accuracy</button>
+              <button class="col-chip rg-dim-chip" data-dim="Completeness" data-tooltip="Completeness measures whether all required data is present. A record fails completeness when a mandatory field is null, empty, or contains only whitespace. Example: every customer record must have a name and email address.">Completeness</button>
+              <button class="col-chip rg-dim-chip" data-dim="Conformity" data-tooltip="Conformity measures whether values follow a defined format, pattern, or standardised set of allowed values. Example: a country code must be a valid ISO 3166-1 alpha-2 code, a phone number must match a recognised pattern, a status field must be one of a fixed list.">Conformity</button>
+              <button class="col-chip rg-dim-chip" data-dim="Consistency" data-tooltip="Consistency measures whether data values are logically coherent across columns or related records. Contradictory or conflicting data within the same dataset indicates a consistency issue. Example: an order's ship date should not be earlier than its order date.">Consistency</button>
+              <button class="col-chip rg-dim-chip" data-dim="Timeliness" data-tooltip="Timeliness measures whether data is sufficiently up-to-date relative to when it is used. Stale or outdated records reduce the usefulness of data-driven decisions. Example: a last-updated timestamp should be within the last 30 days, ingestion should happen within an agreed SLA window.">Timeliness</button>
+              <button class="col-chip rg-dim-chip" data-dim="Uniqueness" data-tooltip="Uniqueness measures whether records or values that should be distinct are actually distinct. Duplicate records can cause double-counting, incorrect reporting, and process errors. Example: each customer ID should appear only once, each invoice number should be unique across all orders.">Uniqueness</button>
+            </div>
+          </div>
+
+          <!-- Preview -->
+          <div class="rg-section rg-preview-section hidden" id="rg-preview-section">
+            <div class="browse-panel-hdr">
+              <span class="browse-panel-title">Expression Preview</span>
+              <span id="rg-preview-count" class="rg-sel-count"></span>
+            </div>
+            <div id="rg-preview-list" class="rg-preview-list"></div>
+          </div>
+
+          <!-- Create -->
+          <div class="rg-section rg-create-section">
+            <div class="rg-summary" id="rg-summary">Select columns and dimensions above</div>
+            <button id="rg-preview-btn" class="rg-preview-btn" disabled>Preview Expressions</button>
+            <button id="rg-create-btn" class="rule-create-btn" disabled>Create Rules in Purview</button>
+            <div id="rg-progress" class="rg-progress hidden">
+              <div id="rg-progress-bar" class="rg-progress-bar"></div>
+            </div>
+            <p id="rg-create-status" class="rule-create-status"></p>
+            <div id="rg-troubleshoot" class="rg-troubleshoot hidden">
+              <button id="rg-troubleshoot-toggle" class="rg-troubleshoot-toggle">
+                <svg class="rg-ts-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                Troubleshooting
+              </button>
+              <div id="rg-troubleshoot-body" class="rg-troubleshoot-body">
+                <div class="rg-troubleshoot-label">Request URL &amp; headers</div>
+                <pre id="rg-troubleshoot-headers" class="rg-troubleshoot-block"></pre>
+                <div class="rg-troubleshoot-label">Request payload</div>
+                <pre id="rg-troubleshoot-payload" class="rg-troubleshoot-block"></pre>
+                <div class="rg-troubleshoot-label">Error response</div>
+                <pre id="rg-troubleshoot-error" class="rg-troubleshoot-block"></pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <footer>
         <span class="footer-brand">Purview DQ</span>
+        <a
+          class="footer-github"
+          href="https://github.com/MarcoOesterlin/Microsoft-Purview-Unified-Catalog/tree/main/Microsoft_Purview_Data_Quality_Sql_Expression_Validator"
+          target="_blank"
+          rel="noreferrer"
+          title="View on GitHub"
+        >
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
         <a
           href="https://learn.microsoft.com/en-us/purview/unified-catalog-data-quality-rules#create-a-custom-rule-using-sql-expression"
           target="_blank"
@@ -76,6 +294,7 @@
       </footer>
 
     </div>
+    <div id="dim-tooltip-overlay" class="dim-tooltip-overlay" aria-hidden="true"></div>
     <script src="dist/popup.js" type="module"></script>
   </body>
 </html>

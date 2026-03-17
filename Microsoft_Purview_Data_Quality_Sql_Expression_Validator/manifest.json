@@ -10,7 +10,20 @@
       "48": "icons/icon.svg"
     }
   },
-  "permissions": [],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": [
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "https://login.microsoftonline.com/*",
+    "https://api.purview-service.microsoft.com/*",
+    "https://*.purview.azure.com/*",
+    "https://*.purview-service.microsoft.com/*",
+    "https://*.api.purview-service.microsoft.com/*",
+    "https://*.services.ai.azure.com/*"
+  ],
   "icons": {
     "48": "icons/icon.svg",
     "96": "icons/icon.svg"
