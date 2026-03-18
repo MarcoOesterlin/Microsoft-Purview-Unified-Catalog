@@ -17,11 +17,6 @@ browser.webRequest.onBeforeSendHeaders.addListener(
   {
     urls: [
       'https://login.microsoftonline.com/*',
-      'https://*.purview.azure.com/*',
-      'https://api.purview-service.microsoft.com/*',
-      'https://*.api.purview-service.microsoft.com/*',
-      'https://*.purview-service.microsoft.com/*',
-      'https://*.services.ai.azure.com/*',
     ],
   },
   ['blocking', 'requestHeaders']

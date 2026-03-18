@@ -1431,8 +1431,13 @@ document.addEventListener('DOMContentLoaded', () => {
       rgTsHeaders.textContent = `POST ${_lastRuleUrl}\n\n${Object.entries(_lastRuleHeaders).map(([k, v]) => `${k}: ${v}`).join('\n')}`;
       rgTsPayload.textContent = _lastRulePayload ? JSON.stringify(_lastRulePayload, null, 2) : '';
       rgTsError.textContent   = _lastRuleResponse;
-      rgTroubleshoot.classList.remove('hidden');
-      rgTroubleshoot.classList.add('open');
+      if (failed > 0) {
+        rgTroubleshoot.classList.remove('hidden');
+        rgTroubleshoot.classList.add('open');
+      } else {
+        rgTroubleshoot.classList.remove('hidden');
+        rgTroubleshoot.classList.remove('open');
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       rgCreateStatus.textContent = msg;
