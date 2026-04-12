@@ -484,11 +484,13 @@ async function createRule(
   const domId = encodeURIComponent(ctx.domainId);
   const prdId = encodeURIComponent(ctx.productId);
   const astId = encodeURIComponent(ctx.assetId);
-  const url   = `https://api.purview-service.microsoft.com/datagovernance/quality/business-domains/${domId}/data-products/${prdId}/data-assets/${astId}/global-rules`;
+  const ruleIdEnc = encodeURIComponent(ruleId);
+  const base  = cfg.endpoint.replace(/\/$/, '');
+  const url   = `${base}/purviewdataquality/api/business-domains/${domId}/data-products/${prdId}/data-assets/${astId}/rules/${ruleIdEnc}?api-version=2026-01-12-preview`;
 
   _lastRuleUrl      = url;
   _lastRuleResponse = '';
-  const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
+  const res = await fetch(url, { method: 'PUT', headers, body: JSON.stringify(body) });
   const resBody = await res.text().catch(() => '');
   _lastRuleResponse = `${res.status} ${res.statusText}\n\n${resBody || '(empty response body)'}`;
   if (!res.ok) {
